@@ -1,0 +1,22 @@
+require './lib/global'
+require 'pry'
+class Responder
+
+  def initialize(request)
+    @request = request
+  end
+
+  def self.respond(request)
+    response = "Hello World! (#{Global.reps})\n#{request}"
+    headers  = ["http/1.1 200 ok",
+                "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+                "server: ruby",
+                "content-type: text/html; charset=iso-8859-1",
+                "content-length: #{response.length}\r\n\r\n"]
+                .join("\r\n")
+    Global.reps += 1
+                
+    [response, headers]
+  end
+
+end
