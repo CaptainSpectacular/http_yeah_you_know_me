@@ -13,7 +13,7 @@ class Daemon
     Socket.tcp_server_loop(port) do |client|
       request = build_request(client)
 
-      response = "<html><head></head><body><pre> Hello World! (#{rep}) </pre></body>#{request}</html>"
+      response = "Hello World! (#{rep})\n#{request}"
 
       headers = ["http/1.1 200 ok",
                  "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
@@ -49,12 +49,14 @@ class Daemon
       end
     end
     
-    ["Verb: #{verb}",
-     "Path: #{path}",
-     "Protocol: #{protocol}", 
-      host,
-     "Port: #{port}",
-      origin,
-      accept]
+    <<~HEREDOC
+      Verb: #{verb}
+      Path: #{path}
+      Protocol: #{protocol}
+      #{host}
+      Port: #{port}
+      #{origin}
+      #{accept}
+      HEREDOC
   end
 end
