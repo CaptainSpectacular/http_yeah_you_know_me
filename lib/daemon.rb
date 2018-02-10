@@ -1,4 +1,5 @@
 require 'socket'
+require './lib/responder'
 require 'pry'
 
 class Daemon
@@ -9,22 +10,11 @@ class Daemon
   end
 
   def listen
-    rep = 0
-    Socket.tcp_server_loop(port) do |client|
-      request = build_request(client)
-
-      response = "Hello World! (#{rep})\n#{request}"
-
-      headers = ["http/1.1 200 ok",
-                 "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-                 "server: ruby",
-                 "content-type: text/html; charset=iso-8859-1",
-                 "content-length: #{response.length}\r\n\r\n"]
-                 .join("\r\n")
-
+    Socket.tcp_server_loop(@port) do |client|
+      request  = build_request(client)
+      response, headers = Responder.respond(request)
       client.write(headers)
       client.write(response)
-      rep += 1
       client.close
     end
   end
