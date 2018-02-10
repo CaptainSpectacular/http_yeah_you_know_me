@@ -16,7 +16,6 @@ class Responder
                 "content-type: text/html; charset=iso-8859-1",
                 "content-length: #{response.length}\r\n\r\n"]
                 .join("\r\n")
-    Global.reps += 1
                 
     [response, headers]
   end
@@ -36,6 +35,7 @@ class Responder
   end
 
   def hello_world
+    Global.reps += 1
     "Hello World! (#{Global.reps})"
   end
 end
