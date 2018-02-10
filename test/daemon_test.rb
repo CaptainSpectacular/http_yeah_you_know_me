@@ -35,4 +35,12 @@ class DaemonTest < Minitest::Test
     assert_equal expected[4], Faraday.get('http://localhost:9292').body.split("\n")[5]
     assert_equal expected[5], Faraday.get('http://localhost:9292').body.split("\n")[6]
   end
+
+  def test_routes_between_pages
+    assert_equal 'Hello World! (0)', Faraday.get('http://localhost:9292/hello').body
+    assert_equal 'Verb: GET', Faraday.get('http://localhost:9292').body.split("\n")[0]
+    assert_equal 'somehow test the date and time', Faraday.get(('http://localhost:9292/datetime').body.split("\n")[0]
+    assert_equal '4', Faraday.get(('http://localhost:9292/shutdown').body.split("\n")[0]
+    # test that the server is no longer operational after /shutdown
+  end
 end
