@@ -12,7 +12,8 @@ class Daemon
   def listen
     Socket.tcp_server_loop(@port) do |client|
       request  = build_request(client)
-      response, headers = Responder.respond(request)
+      responder = Responder.new(request)
+      response, headers = responder.respond
       client.write(headers)
       client.write(response)
       client.close
