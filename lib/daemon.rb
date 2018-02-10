@@ -10,15 +10,8 @@ class Daemon
 
   def listen
     rep = 0
-    server = TCPServer.new(port)
-    loop do
-      client = server.accept
-      request_lines = []
-      while line = client.gets and !line.chomp.empty?
-        request_lines << line.chomp
-      end
-      response = "<pre>" + request_lines.join("\n") + "</pre>"
-      output = ("Hello World! (#{rep})")
+    Socket.tcp_server_loop(port) do |client|
+      output = "Hello World! (#{rep})"
       headers = ["http/1.1 200 ok",
                  "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
                  "server: ruby",
