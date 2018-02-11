@@ -18,12 +18,14 @@ class Daemon
       response, headers = responder.respond
       client.write(headers)
       client.write(response)
-      if response.include?('Requests made:')
-        server.close
-        Global.reps         = 0
-        Global.net_requests = 0
-      end
+      shutdown(server) if response.include?('Requests made:')
     end
+  end
+
+  def shutdown(server)
+    server.close
+    Global.reps         = 0
+    Global.net_requests = 0
   end
 
   def build_request(client)
