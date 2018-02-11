@@ -39,6 +39,10 @@ class DaemonTest < Minitest::Test
   def test_datetime_and_shutdown_pages
     assert Faraday.get('http://localhost:9292/datetime').body.include?('February')
     assert Faraday.get('http://localhost:9292/shutdown').body.include?('Requests made: ')
-    # test that the server is no longer operational after /shutdown
+  end
+
+  def test_word_search
+    assert_equal 'EVIL is a known word', Faraday.get('http://localhost:9292/word_search?=evil')
+    assert_equal 'FARQUAD is not known word', Faraday.get('http://localhost:9292/word_search?=farquad')
   end
 end
