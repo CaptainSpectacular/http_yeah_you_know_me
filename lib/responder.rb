@@ -47,7 +47,6 @@ class Responder
   end
 
   def shutdown
-    Global.net_requests.to_s
-
+    "Requests made: #{Global.net_requests.to_s}"
   end
 end
