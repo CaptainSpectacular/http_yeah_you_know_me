@@ -25,7 +25,7 @@ class Daemon
 
   def shutdown(server)
     server.close
-    Global.reps         = 0
+    Global.reps         = -1
     Global.net_requests = 0
   end
 

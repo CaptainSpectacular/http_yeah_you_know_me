@@ -4,5 +4,5 @@ module Global
   end
 end
 
-Global.reps         = 0
+Global.reps         = -1
 Global.net_requests = 0
