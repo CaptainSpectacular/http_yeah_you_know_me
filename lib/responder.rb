@@ -1,4 +1,5 @@
 require './lib/global'
+require './lib/daemon'
 require 'pry'
 class Responder
   attr_reader :request
@@ -8,6 +9,7 @@ class Responder
   end
 
   def respond
+    Global.net_requests += 1
     response = check_path(request)
 
     headers  = ["http/1.1 200 ok",
@@ -27,6 +29,7 @@ class Responder
     when '/'         then return diagonistics
     when '/hello'    then return hello_world
     when '/datetime' then return date_time
+    when '/shutdown' then return shutdown
     end
   end
 
@@ -37,5 +40,14 @@ class Responder
   def hello_world
     Global.reps += 1
     "Hello World! (#{Global.reps})"
+  end
+
+  def date_time
+    Time.now.strftime('%I:%M%p on %A, %B %d, %Y')
+  end
+
+  def shutdown
+    Global.net_requests.to_s
+
   end
 end
