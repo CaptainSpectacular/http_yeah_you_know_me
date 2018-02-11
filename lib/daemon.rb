@@ -11,14 +11,15 @@ class Daemon
 
   def listen
     server = TCPServer.new(@port)
-    client = server.accept
-    until server.closed?
+    loop do
+      client = server.accept
       request   = build_request(client)
       responder = Responder.new(request)
       response, headers = responder.respond
       client.write(headers)
       client.write(response)
-      shutdown(server) if response.include?('Requests made:')
+      client.close
+      shutdown(server) && break if response.include?('Requests made:')
     end
   end
 
@@ -56,6 +57,6 @@ class Daemon
       Port: #{port}
       #{origin}
       #{accept}
-      HEREDOC
+    HEREDOC
   end
 end
