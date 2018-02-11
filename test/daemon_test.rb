@@ -36,10 +36,9 @@ class DaemonTest < Minitest::Test
     assert_equal expected[5], Faraday.get('http://localhost:9292').body.split("\n")[5]
   end
 
-  # def test_datetime_and_shutdown_pages
-  #   skip
-  #   assert Faraday.get('http://localhost:9292/datetime').body.include?('February')
-  #   assert_equal '4', Faraday.get('http://localhost:9292/shutdown').body
-  #   # test that the server is no longer operational after /shutdown
-  # end
+  def test_datetime_and_shutdown_pages
+    assert Faraday.get('http://localhost:9292/datetime').body.include?('February')
+    assert Faraday.get('http://localhost:9292/shutdown').body.include?('Requests made: ')
+    # test that the server is no longer operational after /shutdown
+  end
 end
