@@ -10,13 +10,15 @@ class Daemon
   end
 
   def listen
-    Socket.tcp_server_loop(@port) do |client|
-      request  = build_request(client)
+    server = TCPServer.new(@port)
+    client = server.accept
+    until server.closed?
+      request   = build_request(client)
       responder = Responder.new(request)
       response, headers = responder.respond
       client.write(headers)
       client.write(response)
-      client.close
+      server.close if response.include?('Requests made:')
     end
   end
 
