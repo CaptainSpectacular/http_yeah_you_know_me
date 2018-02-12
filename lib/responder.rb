@@ -9,9 +9,9 @@ class Responder
   end
 
   def respond
+    return if request.nil?
     Global.net_requests += 1
     response = check_path(request)
-
     headers  = ["http/1.1 200 ok",
                 "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
                 "server: ruby",
@@ -23,8 +23,9 @@ class Responder
   end
 
   def check_path(request)
-    split   = request.split("\n")
-    _, path = split[1].split(": ")
+    spliced   = request.split("\n")
+    path = spliced[1].split(": ")[1]
+    return word_search if path.include?("word_search")
     case path
     when '/'         then return diagonistics
     when '/hello'    then return hello_world
@@ -48,5 +49,15 @@ class Responder
 
   def shutdown
     "Requests made: #{Global.net_requests.to_s}"
+  end
+
+  def word_search
+    word = request.split("\n")[1].split('?word=')[1]
+    dictionary = File.read('/usr/share/dict/words')
+    if dictionary.split("\n").include?(word)
+      "#{word.upcase} is a known word"
+    else
+      "#{word.upcase} is not a known word"
+    end
   end
 end
