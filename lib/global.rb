@@ -1,8 +1,9 @@
 module Global
   class << self
-    attr_accessor :reps, :net_requests
+    attr_accessor :hello, :net_requests, :guess_total
   end
 end
 
-Global.reps         = -1
+Global.hello        = -1
 Global.net_requests = 0
+Global.guess_total  = 0
