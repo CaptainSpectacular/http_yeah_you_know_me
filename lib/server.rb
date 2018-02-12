@@ -1,4 +1,7 @@
 require 'socket'
+require './lib/requestor'
+require './lib/responder'
+require './lib/headers'
 
 class Server
 
@@ -11,27 +14,15 @@ class Server
     daemon = TCPServer.new(port)
     hello = 0
     loop do
-
       client = daemon.accept
-      request = []
 
-      response = "Hello World (#{hello})"
+      request       = Requestor.build(client)
+      response_body = Responder.respond(request)
+      headers       = Headers.default(response_body)
 
-      headers = ["http/1.1 200 ok",
-          "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-          "server: ruby",
-          "content-type: text/html; charset=iso-8859-1",
-          "content-length: #{response.length}\r\n\r\n"].join("\r\n")
-
-      while line = client.gets and !line.chomp.empty?
-        request << line.chomp
-      end
-
-      hello += 1
       client.write(headers)
-      client.write(response)
+      client.write(response_body)
       client.close
-
     end
   end
 end
