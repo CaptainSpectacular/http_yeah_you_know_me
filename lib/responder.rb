@@ -9,7 +9,6 @@ class Responder
   end
 
   def respond
-    return if request.nil?
     Global.net_requests += 1
     response = check_path(request)
     headers  = ["http/1.1 200 ok",
