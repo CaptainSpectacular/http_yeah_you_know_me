@@ -26,10 +26,12 @@ class Responder
     path = spliced[1].split(": ")[1]
     return word_search if path.include?("word_search")
     case path
-    when '/'         then return diagonistics
-    when '/hello'    then return hello_world
-    when '/datetime' then return date_time
-    when '/shutdown' then return shutdown
+    when '/'           then return diagonistics
+    when '/hello'      then return hello_world
+    when '/datetime'   then return date_time
+    when '/shutdown'   then return shutdown
+    when '/start_game' then return start_game
+    when '/game'       then return game
     end
   end
 
@@ -38,8 +40,8 @@ class Responder
   end
 
   def hello_world
-    Global.reps += 1
-    "Hello World! (#{Global.reps})"
+    Global.hello += 1
+    "Hello World! (#{Global.hello})"
   end
 
   def date_time
@@ -57,6 +59,21 @@ class Responder
       "#{word.upcase} is a known word"
     else
       "#{word.upcase} is not a known word"
+    end
+  end
+
+  def start_game
+    game = Game.new
+    'Good luck!'
+  end
+
+  def game
+    verb  = request.split[0]
+    guess = request.split("\n")[1].split('?guess=')[1]
+
+    case verb
+    when 'POST' then return game.guess(guess)
+    when 'GET'  then return Global.guess_total, game.hint
     end
   end
 end
