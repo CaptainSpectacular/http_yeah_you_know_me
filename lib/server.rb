@@ -12,7 +12,6 @@ class Server
 
   def listen
     daemon = TCPServer.new(port)
-    hello = 0
     loop do
       client = daemon.accept
 
