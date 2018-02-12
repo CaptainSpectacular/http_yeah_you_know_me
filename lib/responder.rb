@@ -12,17 +12,17 @@ class Responder
     Global.net_requests += 1
     response = check_path(request)
     headers  = ["http/1.1 200 ok",
-                "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-                "server: ruby",
-                "content-type: text/html; charset=iso-8859-1",
-                "content-length: #{response.length}\r\n\r\n"]
-                .join("\r\n")
-                
+               "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+               "server: ruby",
+               "content-type: text/html; charset=iso-8859-1",
+               "content-length: #{response.length}\r\n\r\n"]
+               .join("\r\n")
+
     [response, headers]
   end
 
   def check_path(request)
-    spliced   = request.split("\n")
+    spliced = request.split("\n")
     path = spliced[1].split(": ")[1]
     return word_search if path.include?("word_search")
     case path
