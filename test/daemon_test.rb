@@ -27,7 +27,7 @@ class DaemonTest < Minitest::Test
                 'Port: 9292',
                 'Origin: 127.0.0.1',
                 'Accept: */*']
-    
+
     assert_equal expected[0], Faraday.get('http://localhost:9292').body.split("\n")[0]
     assert_equal expected[1], Faraday.get('http://localhost:9292').body.split("\n")[1]
     assert_equal expected[2], Faraday.get('http://localhost:9292').body.split("\n")[2]
@@ -42,7 +42,7 @@ class DaemonTest < Minitest::Test
   end
 
   def test_word_search
-    assert_equal 'EVIL is a known word', Faraday.get('http://localhost:9292/word_search?=evil')
-    assert_equal 'FARQUAD is not known word', Faraday.get('http://localhost:9292/word_search?=farquad')
+    assert_equal 'EVIL is a known word', Faraday.get('http://localhost:9292/word_search?word=evil').body
+    assert_equal 'FARQUAD is not a known word', Faraday.get('http://localhost:9292/word_search?word=farquad').body
   end
 end
