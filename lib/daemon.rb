@@ -1,5 +1,6 @@
 require 'socket'
 require './lib/responder'
+require './lib/requestor'
 require 'pry'
 
 class Daemon
@@ -12,8 +13,8 @@ class Daemon
   def listen
     server = TCPServer.new(@port)
     loop do
-      client = server.accept
-      request   = build_request(client)
+      client    = server.accept
+      request   = Requestor.build_request(client)
       responder = Responder.new(request)
       response, headers = responder.respond
       client.write(headers)
@@ -27,36 +28,5 @@ class Daemon
     server.close
     Global.reps         = -1
     Global.net_requests = 0
-  end
-
-  def build_request(client)
-    request = []
-    while line = client.gets and !line.chomp.empty?
-      request << line.chomp
-    end
-    parse(request)
-  end
-
-  def parse(request)
-    verb, path, protocol = request[0].split
-    host, origin, accept = nil, 'Origin: 127.0.0.1', nil
-    request[1..-1].each do |item|
-      key, value = item.split(': ')
-      case key
-      when 'Host'   then host   = [key, value].join(': ')
-      when 'Origin' then origin = [key, value].join(': ')
-      when 'Accept' then accept = [key, value].join(': ')
-      end
-    end
-    
-    <<~HEREDOC
-      Verb: #{verb}
-      Path: #{path}
-      Protocol: #{protocol}
-      #{host}
-      Port: #{port}
-      #{origin}
-      #{accept}
-    HEREDOC
   end
 end
