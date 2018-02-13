@@ -47,4 +47,8 @@ class Responder
     "You're in the POST game!"
   end
 
+  def self.get_game
+    "You're in the GET game!"
+  end
+
 end
