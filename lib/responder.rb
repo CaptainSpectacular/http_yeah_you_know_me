@@ -46,8 +46,8 @@ class Responder
     dict = File.read('/usr/share/dict/words')
 
     case dict.include?(word)
-    when true  then "#{word} is a known word"
-    when false then "#{word} is not a known word"
+    when true  then "#{word.upcase} is a known word"
+    when false then "#{word.upcase} is not a known word"
     end
   end
 end
