@@ -1,6 +1,6 @@
 require './lib/tracker'
 require './lib/parser'
-require 'pry'
+
 class Responder
 
   def self.respond(request)
