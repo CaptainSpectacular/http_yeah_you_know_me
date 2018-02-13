@@ -41,4 +41,9 @@ class ServerTest < Minitest::Test
     assert_equal expected, Faraday.get('http://localhost:9292/datetime').body
   end
 
+  def test_word_game
+    assert_equal 'SPIZZERINCTUM is a known word', Faraday.get('http://localhost:9292/word_search?word=spizzerinctum').body
+    assert_equal 'FARQUAD is not a known word', Faraday.get('http://localhost:9292/word_search?word=farquad').body
+  end
+
 end
