@@ -1,8 +1,8 @@
 require 'socket'
 require './lib/requestor'
-require './lib/responder'
 require './lib/headers'
 require './lib/tracker'
+require './lib/router'
 
 class Server
   attr_reader :port
@@ -17,7 +17,7 @@ class Server
       client = daemon.accept
 
       request       = Requestor.build(client)
-      response_body = Responder.respond(request)
+      response_body = Router.route(request)
       headers       = Headers.default(response_body)
 
       client.write(headers)
