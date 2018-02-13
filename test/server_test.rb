@@ -15,9 +15,24 @@ class ServerTest < Minitest::Test
   def test_server_listens_on_port
     server = Server.new(9191)
 
-    assert_equal 'Hello World (0)', Faraday.get('http://localhost:9292').body
-    assert_equal 'Hello World (1)', Faraday.get('http://localhost:9292').body
-    assert_equal 'Hello World (2)', Faraday.get('http://localhost:9292').body
+    assert_equal 'Hello World (0)', Faraday.get('http://localhost:9292/hello').body
+    assert_equal 'Hello World (1)', Faraday.get('http://localhost:9292/hello').body
+    assert_equal 'Hello World (2)', Faraday.get('http://localhost:9292/hello').body
+  end
+
+  def test_server_diagnostics_page
+    expected = <<~HEREDOC
+                Verb: GET
+                Path: /
+                Protocol: HTTP/1.1
+                Host: localhost:9292
+                Port: 9292
+                Origin: localhost
+                Accept: */*
+               HEREDOC
+    
+
+    assert_equal expected, Faraday.get('http://localhost:9292/').body
   end
 
 end
