@@ -16,8 +16,7 @@ class Parser
   end
 
   def find_word
-    word = path.scan(/\=\w*/)[0].delete('=')
-    word.upcase
+    path.scan(/\=\w*/)[0].delete('=')
   end
 
 end
