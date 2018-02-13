@@ -7,7 +7,7 @@ class Responder
 
     case @parser.path
     when '/'     then diagnostics
-    when 'hello' then hello
+    when '/hello' then hello
     end
   end
 
@@ -19,7 +19,7 @@ class Responder
       Host: #{@parser.host}
       Port: #{@parser.port}
       Origin: #{@parser.origin}
-      Accept: #{@parser.origin}
+      Accept: #{@parser.accept}
     HEREDOC
   end
 
