@@ -5,7 +5,7 @@ require './lib/requestor'
 class RequestorTest < Minitest::Test
 
   def test_build_response
-    client   = File.open('./requestor_test.txt')
+    client   = File.open('./test/requestor_test.txt')
     actual = Requestor.build(client)
     expected = ["GET / HTTP/1.1",
                 "User-Agent: Faraday v0.14.0",
