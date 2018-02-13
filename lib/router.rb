@@ -31,5 +31,4 @@ class Router
     when '/game'       then Responder.post_game
     end
   end
-
 end
