@@ -22,6 +22,7 @@ class Server
       client.write(headers)
       client.write(response_body)
       client.close
+      daemon.close if response_body.include?('Total Requests:')
     end
   end
 end
