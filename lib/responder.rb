@@ -3,6 +3,7 @@ require './lib/parser'
 class Responder
 
   def self.respond(request)
+    Tracker.total_reqs += 1
     @parser = Parser.new(request)
 
     case @parser.path
