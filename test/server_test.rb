@@ -35,4 +35,10 @@ class ServerTest < Minitest::Test
     assert_equal expected, Faraday.get('http://localhost:9292/').body
   end
 
+  def test_server_date_time
+    expected = Time.new.strftime('%l:%M on %A, %m %e, %Y')
+
+    assert_equal expected, Faraday.get('http://localhost:9292/datetime').body
+  end
+
 end
