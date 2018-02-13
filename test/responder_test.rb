@@ -66,4 +66,8 @@ class ResponderTest < Minitest::Test
   def test_post_game
     assert_equal "You're in the POST game!", Responder.post_game
   end
+
+  def test_get_game
+    assert_equal "You're in the GET game!", Responder.get_game
+  end
 end
