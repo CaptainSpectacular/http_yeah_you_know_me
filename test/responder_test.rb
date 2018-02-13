@@ -3,6 +3,7 @@ require 'minitest/pride'
 require './lib/responder'
 require './lib/tracker'
 require './lib/parser'
+require './lib/router'
 
 class ResponderTest < Minitest::Test
 
@@ -31,7 +32,7 @@ class ResponderTest < Minitest::Test
                 Accept: */*
                HEREDOC
 
-    assert_equal expected, Responder.respond(mock)
+    assert_equal expected, Router.route(mock)
   end
 
   def test_date_time
@@ -55,6 +56,6 @@ class ResponderTest < Minitest::Test
             "Host: localhost:9292",
             "GET / HTTP/1.1"]
 
-    assert_equal 'SPIZZERINCTUM is a known word', Responder.respond(mock)
+    assert_equal 'SPIZZERINCTUM is a known word', Router.route(mock)
   end
 end
