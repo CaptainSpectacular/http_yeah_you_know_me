@@ -58,4 +58,12 @@ class ResponderTest < Minitest::Test
 
     assert_equal 'SPIZZERINCTUM is a known word', Router.route(mock)
   end
+
+  def test_game_start
+    assert_equal "You're in the start_game!", Responder.start_game
+  end
+
+  def test_post_game
+    assert_equal "You're in the POST game!", Responder.post_game
+  end
 end

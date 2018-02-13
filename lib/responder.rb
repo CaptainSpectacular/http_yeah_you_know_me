@@ -4,10 +4,6 @@ require './lib/router'
 
 class Responder
 
-  def self.respond(request)
-  
-  end
-
   def self.diagnostics(parser)
     <<~HEREDOC
       Verb: #{parser.verb}
@@ -42,4 +38,13 @@ class Responder
     when false then "#{word.upcase} is not a known word"
     end
   end
+
+  def self.start_game
+    "You're in the start_game!"
+  end
+
+  def self.post_game
+    "You're in the POST game!"
+  end
+
 end
