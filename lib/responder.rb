@@ -6,8 +6,10 @@ class Responder
     @parser = Parser.new(request)
 
     case @parser.path
-    when '/'     then diagnostics
-    when '/hello' then hello
+    when '/'         then diagnostics
+    when '/hello'    then hello
+    when '/datetime' then date_time
+    when '/shutdown' then shut_down
     end
   end
 
@@ -21,6 +23,14 @@ class Responder
       Origin: #{@parser.origin}
       Accept: #{@parser.accept}
     HEREDOC
+  end
+
+  def self.shut_down
+    "Total Requests: #{Tracker.total_reqs}"
+  end
+
+  def self.date_time
+    Time.new.strftime('%l:%M on %A, %m %e, %Y')
   end
 
   def self.hello
