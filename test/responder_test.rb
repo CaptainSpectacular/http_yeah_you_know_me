@@ -32,4 +32,16 @@ class ResponderTest < Minitest::Test
 
     assert_equal expected, Responder.respond(mock)
   end
+
+  def test_date_time
+    expected = Time.new.strftime('%l:%M on %A, %m %e, %Y')
+
+    assert_equal expected, Responder.date_time
+  end
+
+  def test_shut_down
+    expected = 'Total Requests: 0'
+
+    assert_equal expected, Responder.shut_down
+  end
 end
