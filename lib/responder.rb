@@ -1,30 +1,22 @@
 require './lib/tracker'
 require './lib/parser'
+require './lib/router'
 
 class Responder
 
   def self.respond(request)
-    Tracker.total_reqs += 1
-    @parser = Parser.new(request)
-    return word_search if @parser.path.include?('/word_search')
-
-    case @parser.path
-    when '/'         then diagnostics
-    when '/hello'    then hello
-    when '/datetime' then date_time
-    when '/shutdown' then shut_down
-    end
+  
   end
 
-  def self.diagnostics
+  def self.diagnostics(parser)
     <<~HEREDOC
-      Verb: #{@parser.verb}
-      Path: #{@parser.path}
-      Protocol: #{@parser.protocol}
-      Host: #{@parser.host}
-      Port: #{@parser.port}
-      Origin: #{@parser.origin}
-      Accept: #{@parser.accept}
+      Verb: #{parser.verb}
+      Path: #{parser.path}
+      Protocol: #{parser.protocol}
+      Host: #{parser.host}
+      Port: #{parser.port}
+      Origin: #{parser.origin}
+      Accept: #{parser.accept}
     HEREDOC
   end
 
@@ -41,8 +33,8 @@ class Responder
     "Hello World (#{Tracker.hellos})"
   end
 
-  def self.word_search
-    word = @parser.find_word
+  def self.word_search(parser)
+    word = parser.find_word
     dict = File.read('/usr/share/dict/words')
 
     case dict.include?(word)
