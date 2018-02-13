@@ -2,10 +2,11 @@ require 'socket'
 require './lib/requestor'
 require './lib/responder'
 require './lib/headers'
+require './lib/tracker'
 
 class Server
-
   attr_reader :port
+  
   def initialize(port)
     @port = port
   end
@@ -22,7 +23,13 @@ class Server
       client.write(headers)
       client.write(response_body)
       client.close
-      daemon.close if response_body.include?('Total Requests:')
+      shutdown(daemon) if response_body.include?('Total Requests:')
     end
+  end
+
+  def shutdown(daemon)
+    daemon.close
+    Tracker.hellos     = -1
+    Tracker.total_reqs = 0
   end
 end
