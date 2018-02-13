@@ -15,4 +15,9 @@ class Parser
     @origin, @port = @host.split(':')
   end
 
+  def find_word
+    word = path.scan(/\=\w*/)[0].delete('=')
+    word.upcase
+  end
+
 end
