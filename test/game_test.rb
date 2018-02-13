@@ -23,15 +23,14 @@ class GameTest < Minitest::Test
 
     game.guess(25)
 
-    assert_equal '25 is too low!', game.feedback
+    assert_equal 'Too low!', game.feedback
 
     game.guess(75)
 
-    assert_equal '75 is too high!', game.feedback
+    assert_equal 'Too high!', game.feedback
 
     game.guess(50)
 
-    assert_equal "That's the right number!", game.feedback
+    assert_equal "That's correct!", game.feedback
   end
-
 end
