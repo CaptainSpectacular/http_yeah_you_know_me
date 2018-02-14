@@ -9,9 +9,4 @@ class Requestor
 
     request
   end
-
-  def self.send_game
-    
-  end
-  
 end

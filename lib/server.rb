@@ -29,8 +29,8 @@ class Server
 
   def shutdown(daemon)
     daemon.close
-    Tracker.hellos     = -1
-    Tracker.total_reqs = 0
-    Tracker.game       = nil
+    Tracker::hellos     = -1
+    Tracker::total_reqs = 0
+    Tracker::game       = nil
   end
 end

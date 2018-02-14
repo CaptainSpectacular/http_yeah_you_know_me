@@ -17,7 +17,7 @@ class Responder
   end
 
   def self.shut_down
-    "Total Requests: #{Tracker.total_reqs}"
+    "Total Requests: #{Tracker::total_reqs}"
   end
 
   def self.date_time
@@ -25,8 +25,8 @@ class Responder
   end
 
   def self.hello
-    Tracker.hellos += 1
-    "Hello World (#{Tracker.hellos})"
+    Tracker::hellos += 1
+    "Hello World (#{Tracker::hellos})"
   end
 
   def self.word_search(parser)
@@ -40,15 +40,15 @@ class Responder
   end
 
   def self.start_game
-    Tracker.game = Game.new
+    Tracker::game = Game.new
     "Good luck!"
   end
 
   def self.game
     <<~HEREDOC
-      Guess: #{Tracker.game.recent_guess}
-      Guess Total: #{Tracker.game.guess_total}
-      Feedback: #{Tracker.game.feedback}
+      Guess: #{Tracker::game.recent_guess}
+      Guess Total: #{Tracker::game.guess_total}
+      Feedback: #{Tracker::game.feedback}
     HEREDOC
   end
 

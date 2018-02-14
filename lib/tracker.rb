@@ -6,6 +6,6 @@ module Tracker
   end
 end
 
-Tracker.hellos     = -1
-Tracker.total_reqs = 0
-Tracker.game       = nil
+Tracker::total_reqs =  0
+Tracker::hellos     = -1
+Tracker::game       = nil

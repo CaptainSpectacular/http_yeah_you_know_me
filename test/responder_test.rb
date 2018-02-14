@@ -64,13 +64,13 @@ class ResponderTest < Minitest::Test
   end
 
   def test_game
-    Tracker.game = Game.new
+    Tracker::game = Game.new
     expected = <<~HEREDOC
-                    Guess: #{Tracker.game.recent_guess}
-                    Guess Total: #{Tracker.game.guess_total}
-                    Feedback: #{Tracker.game.feedback}
+                    Guess: #{Tracker::game.recent_guess}
+                    Guess Total: #{Tracker::game.guess_total}
+                    Feedback: #{Tracker::game.feedback}
                   HEREDOC
-                  
+
     assert_equal expected, Responder.game
   end
 end
