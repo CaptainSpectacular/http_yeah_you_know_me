@@ -1,4 +1,5 @@
 require './lib/game'
+
 module Tracker
   class << self
     attr_accessor :hellos, :total_reqs, :game
