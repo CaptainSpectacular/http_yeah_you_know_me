@@ -16,9 +16,10 @@ class Server
     loop do
       client = daemon.accept
 
-      request       = Requestor.build(client)
-      response_body = Router.route(request, client)
-      headers       = Headers.default(response_body)
+      request            = Requestor.build(client)
+      response_body, tag = Router.route(request, client)
+      tag              ||= :ok
+      headers            = Headers.headers(response_body, tag)
 
       client.write(headers)
       client.write(response_body)
