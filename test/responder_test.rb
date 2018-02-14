@@ -60,14 +60,15 @@ class ResponderTest < Minitest::Test
   end
 
   def test_game_start
-    assert_equal "You're in the start_game!", Responder.start_game
+    assert_equal 'Good luck!', Responder.start_game
   end
 
-  def test_post_game
-    assert_equal "You're in the POST game!", Responder.post_game
-  end
-
-  def test_get_game
-    assert_equal "You're in the GET game!", Responder.get_game
+  def test_game
+    expected = <<~HEREDOC
+                    Guess: #{Tracker.game.recent_guess}
+                    Guess Total: #{Tracker.game.guess_total}
+                    Feedback: #{Tracker.game.feedback}
+                  HEREDOC
+    assert_equal expected, Responder.game
   end
 end
