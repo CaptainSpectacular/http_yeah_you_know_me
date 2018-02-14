@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require 'faraday'
 require './lib/server'
+require './lib/tracker'
 
 class ServerTest < Minitest::Test
   
@@ -46,16 +47,32 @@ class ServerTest < Minitest::Test
     assert_equal 'FARQUAD is not a known word', Faraday.get('http://localhost:9292/word_search?word=farquad').body
   end
 
-  def test_get_game
-    assert_equal "You're in the GET game!", Faraday.get('http://localhost:9292/game').body
+  def test_start_game
+    assert_equal "Good luck!", Faraday.post('http://localhost:9292/start_game').body
+  end
+
+  def test_get_game_and_start_game
+    Tracker.game = Game.new
+    expected = <<~HEREDOC
+                  Guess: #{Tracker.game.recent_guess}
+                  Guess Total: #{Tracker.game.guess_total}
+                  Feedback: #{Tracker.game.feedback}
+                HEREDOC
+
+    assert_equal expected, Faraday.get('http://localhost:9292/game').body
   end
 
   def test_post_game
-    assert_equal "You're in the POST game!", Faraday.post('http://localhost:9292/game').body
-  end
+    skip
+    Tracker.game = Game.new
+    expected = <<~HEREDOC
+                  Guess: #{Tracker.game.recent_guess}
+                  Guess Total: #{Tracker.game.guess_total}
+                  Feedback: #{Tracker.game.feedback}
+                HEREDOC
+    
+    Faraday.post('http://localhost:9292/game', 'guess = 50')
 
-  def test_start_game
-    assert_equal "You're in the start_game!", Faraday.post('http://localhost:9292/start_game').body
+    assert_equal expected, Faraday.post('http://localhost:9292/game').body
   end
-
 end
