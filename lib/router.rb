@@ -3,8 +3,9 @@ require './lib/parser'
 
 class Router
 
-  def self.route(request)
+  def self.route(request, client)
     Tracker.total_reqs += 1
+    @client = client
     @parser = Parser.new(request)
 
     case @parser.verb
@@ -21,14 +22,15 @@ class Router
     when '/hello'    then Responder.hello
     when '/datetime' then Responder.date_time
     when '/shutdown' then Responder.shut_down
-    when '/game'     then Responder.get_game
+    when '/game'     then Responder.game
     end
   end
 
   def self.route_post
+    # @parser.find_word
     case @parser.path
     when '/start_game' then Responder.start_game
-    when '/game'       then Responder.post_game
+    when '/game'       then Tracker.game.guess(@parser.find_guess(@client)) && Responder.game
     end
   end
 end
