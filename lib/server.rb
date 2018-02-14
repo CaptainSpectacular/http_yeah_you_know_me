@@ -17,7 +17,7 @@ class Server
       client = daemon.accept
 
       request       = Requestor.build(client)
-      response_body = Router.route(request)
+      response_body = Router.route(request, client)
       headers       = Headers.default(response_body)
 
       client.write(headers)
@@ -31,5 +31,6 @@ class Server
     daemon.close
     Tracker.hellos     = -1
     Tracker.total_reqs = 0
+    Tracker.game       = nil
   end
 end
