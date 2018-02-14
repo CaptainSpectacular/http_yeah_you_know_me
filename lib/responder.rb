@@ -41,7 +41,7 @@ class Responder
 
   def self.start_game
     Tracker::game = Game.new
-    "Good luck!"
+    ["Good luck!", :moved]
   end
 
   def self.game
@@ -50,6 +50,18 @@ class Responder
       Guess Total: #{Tracker::game.guess_total}
       Feedback: #{Tracker::game.feedback}
     HEREDOC
+  end
+
+  def self.forbidden
+    ['Forbidden', :forbidden]
+  end
+
+  def self.not_found
+    ['Page not found', :not_found]
+  end
+
+  def self.internal_error
+    ['Internal Server Error', :error]
   end
 
 end
