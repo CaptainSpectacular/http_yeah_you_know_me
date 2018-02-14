@@ -40,15 +40,16 @@ class Responder
   end
 
   def self.start_game
-    "You're in the start_game!"
+    Tracker.game = Game.new
+    "Good luck!"
   end
 
-  def self.post_game
-    "You're in the POST game!"
-  end
-
-  def self.get_game
-    "You're in the GET game!"
+  def self.game
+    <<~HEREDOC
+      Guess: #{Tracker.game.recent_guess}
+      Guess Total: #{Tracker.game.guess_total}
+      Feedback: #{Tracker.game.feedback}
+    HEREDOC
   end
 
 end
