@@ -23,14 +23,25 @@ class Router
     when '/datetime' then Responder.date_time
     when '/shutdown' then Responder.shut_down
     when '/game'     then Responder.game
+    else route_failure
     end
   end
 
   def self.route_post
-    # @parser.find_word
+    return route_failure if Tracker::game && @parser.path == '/start_game'
+
     case @parser.path
     when '/start_game' then Responder.start_game
     when '/game'       then Tracker::game.guess(@parser.find_guess(@client)) && Responder.game
+    else route_failure
+    end
+  end
+
+  def self.route_failure
+    case @parser.path
+    when '/start_game' then  Responder.forbidden
+    when '/force_error' then Responder.internal_error
+    else Responder.not_found
     end
   end
 end
