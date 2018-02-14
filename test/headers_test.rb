@@ -1,6 +1,5 @@
+require_relative './test_helper'
 require './lib/headers'
-require 'minitest/autorun'
-require 'minitest/pride'
 
 class HeadersTest < Minitest::Test
 
