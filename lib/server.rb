@@ -8,16 +8,17 @@ class Server
   attr_reader :port
   
   def initialize(port)
-    @port = port
+    @port      = port
+    @responder = Responder.new
   end
 
   def listen
     daemon = TCPServer.new(port)
     loop do
       client = daemon.accept
-
+      
       request            = Requestor.build(client)
-      response_body, tag = Router.route(request, client)
+      response_body, tag = Router.route(request, client, @responder)
       tag              ||= :ok
       headers            = Headers.headers(response_body, tag)
 
@@ -30,8 +31,8 @@ class Server
 
   def shutdown(daemon)
     daemon.close
-    Tracker::hellos     = -1
-    Tracker::total_reqs = 0
-    Tracker::game       = nil
+    @responder.hellos     = -1
+    @responder.total_reqs = 0
+    @responder.game       = nil
   end
 end

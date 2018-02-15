@@ -3,10 +3,12 @@ require './lib/parser'
 
 class Router
 
-  def self.route(request, client = nil)
-    Tracker::total_reqs += 1
+  def self.route(request, client = nil, responder)
+    @responder = responder
     @client = client
     @parser = Parser.new(request)
+
+    responder.total_reqs += 1
 
     case @parser.verb
     when 'GET'  then route_get
@@ -15,34 +17,34 @@ class Router
   end
 
   def self.route_get
-    return Responder.word_search(@parser) if @parser.path.include?('/word_search')
+    return @responder.word_search(@parser) if @parser.path.include?('/word_search')
 
     case @parser.path
-    when '/'         then Responder.diagnostics(@parser)
-    when '/hello'    then Responder.hello
-    when '/datetime' then Responder.date_time
-    when '/shutdown' then Responder.shut_down
-    when '/game'     then Responder.game
+    when '/'         then @responder.diagnostics(@parser)
+    when '/hello'    then @responder.hello
+    when '/datetime' then @responder.date_time
+    when '/shutdown' then @responder.shut_down
+    when '/game'     then @responder.game
     else route_failure
     end
   end
 
   def self.route_post
-    return route_failure if Tracker::game && @parser.path == '/start_game'
+    return route_failure if @responder.game && @parser.path == '/start_game'
 
     case @parser.path
-    when '/start_game' then Responder.start_game
-    when '/game'       then Tracker::game.guess(@parser.find_guess(@client)) &&
-                            Responder.game
+    when '/start_game' then @responder.start_game
+    when '/game'       then @responder.game.guess(@parser.find_guess(@client)) &&
+                            @responder.web_game
     else route_failure
     end
   end
 
   def self.route_failure
     case @parser.path
-    when '/start_game'  then Responder.forbidden
-    when '/force_error' then Responder.internal_error
-    else Responder.not_found
+    when '/start_game'  then @responder.forbidden
+    when '/force_error' then @responder.internal_error
+    else @responder.not_found
     end
   end
 end

@@ -3,8 +3,15 @@ require './lib/parser'
 require './lib/router'
 
 class Responder
+  attr_accessor :total_reqs, :hellos, :game
 
-  def self.diagnostics(parser)
+  def initialize
+    @total_reqs = 0
+    @hellos     = -1
+    @game       = nil
+  end
+
+  def diagnostics(parser)
     <<~HEREDOC
       Verb: #{parser.verb}
       Path: #{parser.path}
@@ -16,20 +23,20 @@ class Responder
     HEREDOC
   end
 
-  def self.shut_down
-    "Total Requests: #{Tracker::total_reqs}"
+  def shut_down
+    "Total Requests: #{@total_reqs}"
   end
 
-  def self.date_time
+  def date_time
     Time.new.strftime('%l:%M on %A, %m %e, %Y')
   end
 
-  def self.hello
-    Tracker::hellos += 1
-    "Hello World (#{Tracker::hellos})"
+  def hello
+    @hellos += 1
+    "Hello World (#{@hellos})"
   end
 
-  def self.word_search(parser)
+  def word_search(parser)
     word = parser.find_word
     dict = File.read('/usr/share/dict/words')
 
@@ -39,28 +46,28 @@ class Responder
     end
   end
 
-  def self.start_game
-    Tracker::game = Game.new
+  def start_game
+    @game = Game.new
     ["Good luck!", :moved]
   end
 
-  def self.game
+  def web_game
     <<~HEREDOC
-      Guess: #{Tracker::game.recent_guess}
-      Guess Total: #{Tracker::game.guess_total}
-      Feedback: #{Tracker::game.feedback}
+      Guess: #{@game.recent_guess}
+      Guess Total: #{@game.guess_total}
+      Feedback: #{@game.feedback}
     HEREDOC
   end
 
-  def self.forbidden
+  def forbidden
     ['Forbidden', :forbidden]
   end
 
-  def self.not_found
+  def not_found
     ['Page not found', :not_found]
   end
 
-  def self.internal_error
+  def internal_error
     ['Internal Server Error', :error]
   end
 
