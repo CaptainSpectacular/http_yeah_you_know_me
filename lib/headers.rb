@@ -4,6 +4,7 @@ class Headers
     return game_redirection(response) if tag == :moved
     paths = { ok:           '200 ok',
               not_found:    '404 Not Found',
+              moved:        'Moved Permanently',
               forbidden:    '403 Forbidden',
               moved:        '302 Moved Permanently',
               error:        '500 Internal Server Error'}
