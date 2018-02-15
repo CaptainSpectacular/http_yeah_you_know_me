@@ -21,10 +21,10 @@ class Parser
   end
 
   def find_guess(request)
-    body  = request.read(content_length)
-    guess = body.scan(/\n\d\d?\r/m)[0]
-    guess.delete!("\n")
-    guess.delete!("\r")
+    body    = request.read(content_length)
+    guess   = body.scan(/\n\d\d?\r?/m)[0]
+    guess ||= body.scan(/guess=.*/)[0]
+    guess.delete!("guess=\n\r")
     guess.to_i
   end
 
