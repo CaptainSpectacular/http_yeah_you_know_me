@@ -27,7 +27,6 @@ class HeadersTest < Minitest::Test
                 "content-length: 12\r\n\r\n"].join("\r\n")
 
     moved = ["http/1.1 302 Moved Permanently",
-             "Location: http://localhost:9292/start_game",
              "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
              "server: ruby",
              "content-type: text/html; charset=iso-8859-1",
