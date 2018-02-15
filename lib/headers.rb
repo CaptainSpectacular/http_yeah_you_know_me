@@ -18,7 +18,7 @@ class Headers
 
   def self.game_redirection(response)
     ["http/1.1 302 Moved Permanently",
-    "Location: http://localhost:9292/game",
+    "Location: http://localhost:9292/start_game",
     "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
     "server: ruby",
     "content-type: text/html; charset=iso-8859-1",
