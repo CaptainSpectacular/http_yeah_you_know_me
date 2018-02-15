@@ -6,10 +6,14 @@ require './lib/router'
 
 class ResponderTest < Minitest::Test
 
+  def setup
+    @responder = Responder.new
+  end
+
   def test_hello_response
     expected = 'Hello World (0)'
 
-    assert_equal expected, Responder.hello
+    assert_equal expected, @responder.hello
   end
 
   def test_diagnostics
@@ -31,19 +35,19 @@ class ResponderTest < Minitest::Test
                 Accept: */*
                HEREDOC
 
-    assert_equal expected, Router.route(mock)
+    assert_equal expected, Router.route(mock, @responder)
   end
 
   def test_date_time
     expected = Time.new.strftime('%l:%M on %A, %m %e, %Y')
 
-    assert_equal expected, Responder.date_time
+    assert_equal expected, @responder.date_time
   end
 
   def test_shut_down
     expected = 'Total Requests:'
 
-    assert Responder.shut_down.include?(expected)
+    assert @responder.shut_down.include?(expected)
   end
 
   def test_word_search
@@ -62,34 +66,34 @@ class ResponderTest < Minitest::Test
               "Host: localhost:9292",
               "GET / HTTP/1.1"]
   
-    assert_equal 'SPIZZERINCTUM is a known word', Router.route(mock_1)
-    assert_equal 'FARQUAD is not a known word', Router.route(mock_2)
+    assert_equal 'SPIZZERINCTUM is a known word', Router.route(mock_1, @responder)
+    assert_equal 'FARQUAD is not a known word', Router.route(mock_2, @responder)
   end
 
   def test_game_start
-    assert_equal ['Good luck!', :moved], Responder.start_game
+    assert_equal ['Good luck!', :moved], @responder.start_game
   end
 
-  def test_game
-    Tracker::game = Game.new
+  def test_web_game
+    @responder.game = Game.new
     expected = <<~HEREDOC
-                    Guess: #{Tracker::game.recent_guess}
-                    Guess Total: #{Tracker::game.guess_total}
-                    Feedback: #{Tracker::game.feedback}
+                    Guess: #{@responder.game.recent_guess}
+                    Guess Total: #{@responder.game.guess_total}
+                    Feedback: #{@responder.game.feedback}
                   HEREDOC
 
-    assert_equal expected, Responder.game
+    assert_equal expected, @responder.web_game
   end
 
   def test_forbidden
-    assert_equal ['Forbidden', :forbidden], Responder.forbidden
+    assert_equal ['Forbidden', :forbidden], @responder.forbidden
   end
 
   def test_not_found
-    assert_equal ['Page not found', :not_found], Responder.not_found
+    assert_equal ['Page not found', :not_found], @responder.not_found
   end
 
   def test_internal_error
-    assert_equal ['Internal Server Error', :error], Responder.internal_error
+    assert_equal ['Internal Server Error', :error], @responder.internal_error
   end
 end
