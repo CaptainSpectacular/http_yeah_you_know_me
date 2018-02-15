@@ -18,7 +18,7 @@ class Server
       client = daemon.accept
       
       request            = Requestor.build(client)
-      response_body, tag = Router.route(request, client, @responder)
+      response_body, tag = Router.route(request, @responder, client)
       tag              ||= :ok
       headers            = Headers.headers(response_body, tag)
 
