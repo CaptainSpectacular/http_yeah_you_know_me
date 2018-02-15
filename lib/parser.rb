@@ -20,8 +20,8 @@ class Parser
     path.scan(/\=\w*/)[0].delete('=')
   end
 
-  def find_guess(request)
-    body    = request.read(content_length)
+  def find_guess(client)
+    body    = client.read(content_length)
     guess   = body.scan(/\n\d\d?\r?/m)[0]
     guess ||= body.scan(/guess=.*/)[0]
     guess.delete!("guess=\n\r")
