@@ -1,12 +1,12 @@
 class Headers
 
   def self.headers(response, tag)
+    return game_redirection(response) if tag == :moved
     paths = { ok:           '200 ok',
               not_found:    '404 Not Found',
               forbidden:    '403 Forbidden',
               moved:        '302 Moved Permanently',
               error:        '500 Internal Server Error'}
-    return redirection(response) if tag == :moved
 
     ["http/1.1 #{paths[tag]}",
     "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
@@ -16,7 +16,7 @@ class Headers
     
   end
 
-  def self.redirection(response)
+  def self.game_redirection(response)
     ["http/1.1 302 Moved Permanently",
     "Location: http://localhost:9292/game",
     "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",

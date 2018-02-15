@@ -32,14 +32,15 @@ class Router
 
     case @parser.path
     when '/start_game' then Responder.start_game
-    when '/game'       then Tracker::game.guess(@parser.find_guess(@client)) && Responder.game
+    when '/game'       then Tracker::game.guess(@parser.find_guess(@client)) &&
+                            Responder.game
     else route_failure
     end
   end
 
   def self.route_failure
     case @parser.path
-    when '/start_game' then  Responder.forbidden
+    when '/start_game'  then Responder.forbidden
     when '/force_error' then Responder.internal_error
     else Responder.not_found
     end
