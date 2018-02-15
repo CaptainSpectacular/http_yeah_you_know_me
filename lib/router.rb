@@ -3,7 +3,7 @@ require './lib/parser'
 
 class Router
 
-  def self.route(request, client = nil, responder)
+  def self.route(request, responder, client = nil)
     @responder = responder
     @client = client
     @parser = Parser.new(request)
