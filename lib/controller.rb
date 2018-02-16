@@ -5,8 +5,8 @@ class Controller
   attr_reader :verb, :path, :protocol, :host, :port, :origin, :accept, :content_length
 
   def initialize(responder, request, client = nil)
-    @responder      = responder
     @responder.controller = self
+    @responder      = responder
     @request        = request
     @client         = client
     @verb           = nil
