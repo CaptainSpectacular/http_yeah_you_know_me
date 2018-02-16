@@ -1,12 +1,11 @@
 require './lib/responder'
-require './lib/parser'
 
 class Controller
   attr_reader :verb, :path, :protocol, :host, :port, :origin, :accept, :content_length
 
   def initialize(responder, request, client = nil)
-    @responder.controller = self
     @responder      = responder
+    @responder.controller = self
     @request        = request
     @client         = client
     @verb           = nil
