@@ -1,6 +1,7 @@
 class Game
   attr_accessor :master_number
   attr_reader :recent_guess, :feedback, :guess_total
+  
   def initialize
     @master_number = rand(1..100)
     @guess_total   = 0

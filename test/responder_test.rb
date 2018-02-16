@@ -1,7 +1,5 @@
 require_relative './test_helper'
 require './lib/responder'
-require './lib/tracker'
-require './lib/parser'
 require './lib/router'
 
 class ResponderTest < Minitest::Test

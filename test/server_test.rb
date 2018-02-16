@@ -1,8 +1,6 @@
 require_relative './test_helper'
 require 'faraday'
 require './lib/server'
-require './lib/tracker'
-require './lib/game'
 
 class ServerTest < Minitest::Test
   

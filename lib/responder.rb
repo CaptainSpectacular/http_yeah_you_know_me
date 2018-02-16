@@ -1,6 +1,6 @@
-require './lib/tracker'
 require './lib/parser'
 require './lib/router'
+require './lib/game'
 
 class Responder
   attr_accessor :total_reqs, :hellos, :game
