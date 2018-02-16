@@ -15,28 +15,29 @@ class ParserTest < Minitest::Test
               "Content-Length: 8"]
 
      @client = File.open('./test/parser_client_test.txt')
-     @parse = Parser.new(@request)
+     @parser = Parser.new
+     @parser.set(@request)
   end
 
   def test_existance
-    assert_instance_of Parser, @parse
+    assert_instance_of Parser, @parser
   end
 
   def test_attributes
-    assert_equal 'GET', @parse.verb
-    assert_equal '/find_word?word=barnacle', @parse.path
-    assert_equal 'HTTP/1.1', @parse.protocol
-    assert_equal 'localhost:9292', @parse.host
-    assert_equal 'localhost', @parse.origin
-    assert_equal '9292', @parse.port
-    assert_equal '*/*', @parse.accept
+    assert_equal 'GET', @parser.verb
+    assert_equal '/find_word?word=barnacle', @parser.path
+    assert_equal 'HTTP/1.1', @parser.protocol
+    assert_equal 'localhost:9292', @parser.host
+    assert_equal 'localhost', @parser.origin
+    assert_equal '9292', @parser.port
+    assert_equal '*/*', @parser.accept
   end
 
   def test_find_word_method
-    assert_equal 'barnacle', @parse.find_word
+    assert_equal 'barnacle', @parser.find_word
   end
 
   def test_find_guess_method
-    assert_equal 78, @parse.find_guess(@client)
+    assert_equal 78, @parser.find_guess(@client)
   end
 end

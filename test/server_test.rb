@@ -2,6 +2,7 @@ require_relative './test_helper'
 require 'faraday'
 require './lib/server'
 require './lib/tracker'
+require './lib/game'
 
 class ServerTest < Minitest::Test
   
@@ -50,28 +51,30 @@ class ServerTest < Minitest::Test
     assert_equal "Good luck!", Faraday.post('http://localhost:9292/start_game').body
   end
 
-  def test_get_game_and_start_game
-    Tracker::game = Game.new
+  def test_game_requests
+    Faraday.post('http://localhost:9292/start_game')
+    Faraday.post('http://localhost:9292/game', { 'guess' => '-1' })
+
     expected = <<~HEREDOC
-                  Guess: #{Tracker::game.recent_guess}
-                  Guess Total: #{Tracker::game.guess_total}
-                  Feedback: #{Tracker::game.feedback}
+                  Guess: -1
+                  Guess Total: 1
+                  Feedback: Too low!
                 HEREDOC
 
     assert_equal expected, Faraday.get('http://localhost:9292/game').body
   end
 
-  def test_post_game
+  def test_error_codes
     skip
-    Tracker::game = Game.new
-    expected = <<~HEREDOC
-                  Guess: #{Tracker::game.recent_guess}
-                  Guess Total: #{Tracker::game.guess_total}
-                  Feedback: #{Tracker::game.feedback}
-                HEREDOC
-    
-    Faraday.post('http://localhost:9292/game', 'guess = 50')
+    Faraday.post('http://localhost:9292/start_game')
 
-    assert_equal expected, Faraday.post('http://localhost:9292/game').body
+    assert_equal 'Page not found', Faraday.post('http://localhost:9292/hello').body
+    assert_equal 404, Faraday.post('http://localhost:9292/hello').status
+
+    assert_equal 'Forbidden', Faraday.post('http://localhost:9292/start_game').body
+    assert_equal 403, Faraday.post('http://localhost:9292/start_game').status
+
+    assert_equal 'Moved Permanently', Faraday.post('http://localhost:9292/game', {'guess'=>'-1'}).body
+    assert_equal 302, Faraday.post('http://localhost:9292/game', {'guess'=>'43'}).status
   end
 end

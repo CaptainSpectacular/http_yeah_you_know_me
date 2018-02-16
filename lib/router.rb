@@ -3,20 +3,22 @@ require './lib/parser'
 
 class Router
 
-  def self.route(request, responder, client = nil)
+  def initialize(responder, client = nil)
     @responder = responder
-    @client = client
-    @parser = Parser.new(request)
+    @client    = client
+    @parser    = Parser.new
+  end
 
-    responder.total_reqs += 1
-
+  def route(request)
+    @parser.set(request)
+    @responder.total_reqs += 1
     case @parser.verb
     when 'GET'  then route_get
     when 'POST' then route_post
     end
   end
 
-  def self.route_get
+  def route_get
     return @responder.word_search(@parser) if @parser.path.include?('/word_search')
 
     case @parser.path
@@ -24,12 +26,12 @@ class Router
     when '/hello'    then @responder.hello
     when '/datetime' then @responder.date_time
     when '/shutdown' then @responder.shut_down
-    when '/game'     then @responder.game
+    when '/game'     then @responder.web_game
     else route_failure
     end
   end
 
-  def self.route_post
+  def route_post
     return route_failure if @responder.game && @parser.path == '/start_game'
 
     case @parser.path
@@ -40,7 +42,7 @@ class Router
     end
   end
 
-  def self.route_failure
+  def route_failure
     case @parser.path
     when '/start_game'  then @responder.forbidden
     when '/force_error' then @responder.internal_error

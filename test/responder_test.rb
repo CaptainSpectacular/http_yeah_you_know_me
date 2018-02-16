@@ -8,6 +8,7 @@ class ResponderTest < Minitest::Test
 
   def setup
     @responder = Responder.new
+    @router    = Router.new(@responder)
   end
 
   def test_hello_response
@@ -35,7 +36,7 @@ class ResponderTest < Minitest::Test
                 Accept: */*
                HEREDOC
 
-    assert_equal expected, Router.route(mock, @responder)
+    assert_equal expected, @router.route(mock)
   end
 
   def test_date_time
@@ -58,6 +59,7 @@ class ResponderTest < Minitest::Test
             "Connection: close",
             "Host: localhost:9292",
             "GET / HTTP/1.1"]
+
     mock_2 = ["GET /word_search?word=farquad HTTP/1.1",
               "User-Agent: Faraday v0.14.0",
               "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
@@ -66,8 +68,8 @@ class ResponderTest < Minitest::Test
               "Host: localhost:9292",
               "GET / HTTP/1.1"]
   
-    assert_equal 'SPIZZERINCTUM is a known word', Router.route(mock_1, @responder)
-    assert_equal 'FARQUAD is not a known word', Router.route(mock_2, @responder)
+    assert_equal 'SPIZZERINCTUM is a known word', @router.route(mock_1)
+    assert_equal 'FARQUAD is not a known word', @router.route(mock_2)
   end
 
   def test_game_start

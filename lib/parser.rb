@@ -1,7 +1,19 @@
 class Parser
   attr_reader :verb, :path, :protocol, :host, :port, :origin, :accept, :content_length
 
-  def initialize(request)
+  def initialize
+    @verb           = nil
+    @path           = nil
+    @protocol       = nil
+    @host           = nil
+    @accept         = nil
+    @content_length = nil
+    @origin         = nil
+    @port           = nil
+    @host           = nil
+  end
+
+  def set(request)
     @verb, @path, @protocol = request[0].split
 
     request.each do |line|

@@ -1,6 +1,6 @@
 class Requestor
   
-  def self.build(client)
+  def build(client)
     request = []
 
     while line = client.gets and !line.chomp.empty?

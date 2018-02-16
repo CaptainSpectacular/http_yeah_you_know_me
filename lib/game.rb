@@ -4,8 +4,8 @@ class Game
   def initialize
     @master_number = rand(1..100)
     @guess_total   = 0
-    @recent_guess  = nil
-    @feedback      = nil
+    @recent_guess  = -1
+    @feedback      = 'Too low!'
   end
 
   def guess(num)

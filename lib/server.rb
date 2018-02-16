@@ -1,7 +1,6 @@
 require 'socket'
 require './lib/requestor'
 require './lib/headers'
-require './lib/tracker'
 require './lib/router'
 
 class Server
@@ -10,15 +9,16 @@ class Server
   def initialize(port)
     @port      = port
     @responder = Responder.new
+    @requestor = Requestor.new
   end
 
   def listen
     daemon = TCPServer.new(port)
     loop do
       client = daemon.accept
-      
-      request            = Requestor.build(client)
-      response_body, tag = Router.route(request, @responder, client)
+      request            = @requestor.build(client)
+      router             = Router.new(@responder, client)
+      response_body, tag = router.route(request)
       tag              ||= :ok
       headers            = Headers.headers(response_body, tag)
 
