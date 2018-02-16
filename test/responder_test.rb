@@ -1,6 +1,5 @@
 require_relative './test_helper'
 require './lib/responder'
-require './lib/controller'
 
 class ResponderTest < Minitest::Test
 
