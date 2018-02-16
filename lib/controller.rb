@@ -84,8 +84,8 @@ class Controller
     guess   = body.scan(/\n\d\d?\r?/m)[0]
     guess ||= body.scan(/guess=.*/)[0]
     guess.delete!("guess=\n\r")
-    
-    @responder.game.guess(guess.to_i) && @responder.web_game(:moved)
+    @responder.game.guess(guess.to_i)
+    @responder.web_game(:moved)
   end
 
 end
